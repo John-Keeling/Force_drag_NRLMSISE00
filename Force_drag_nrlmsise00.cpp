@@ -38,14 +38,11 @@ double Force_drag_nrlmsise00::nrlmsise00_density(double alt, double lat,
         double lon) {
     // Retrieves mass density from atmos. model for given time and location
 
-    std::cout << "CHECK_1 \n";
     auto [altitude, latitude, longitude] = msis_lla_coordinates(alt, lat, lon);
     auto [day_of_year, previous_day, f10_year, second, day, month, year] 
             = msis_time_stamp(state->eci.epoch.str_UTC_datestamp());
     auto [F107_value, F107A_value] 
             = msis_f107(previous_day, f10_year);
-    std::cout << "CHECK_00" << " " << year << " " << month << " " << day 
-            << "\n";
     std::string Ap_value = ap_value(year, month, day);
     double rho = retrieve_mass_density(day_of_year, year, second, altitude, 
             latitude, longitude, F107_value, F107A_value, Ap_value);
@@ -59,7 +56,6 @@ std::tuple<std::string, std::string,
         double lat, double lon) {
     // Retrieves latitude, longitude and altitude coordinates
 
-    std::cout << "CHECK_2 \n";
     std::string model_latitude, model_longitude, model_altitude;
     std::stringstream model_output;
 
@@ -88,7 +84,6 @@ std::tuple<std::string, std::string, std::string, std::string, std::string,
         std::string epoch) {
     // Retrieves time stamp for MSIS model in specified format
 
-    std::cout << "CHECK_3 \n";
     std::string mod_str1, mod_str2, mod_str3, mod_str4, oneWord, 
         break_str, model_year, model_month, model_day, model_hour, 
         model_minute, model_second;
@@ -155,10 +150,6 @@ std::tuple<std::string, std::string, std::string, std::string, std::string,
     stream_month >> model_month;
     stream_year << model_year;
     stream_year >> model_year; 
-
-    std::cout << "CHECK_A" << " " << dayyear << " " << previous_day << " " 
-            << f10year << " " << model_second << " " << model_day << " " << 
-            model_month << " " << model_year << "\n";
     
     return {str_dayyear, str_previous_day, str_f10year, model_second, model_day, 
             model_month, model_year};
@@ -170,9 +161,6 @@ std::tuple<std::string, std::string,
         int int_month, int int_day) {
     // Checks if leap year and returns year date and month
 
-    std::cout << "CHECK_4 " << std::to_string(int_year) << " " 
-            << std::to_string(int_month) << " " << std::to_string(int_day) 
-            << "\n" ;
     //std::string str_dayyear, str_previous_day, str_f10year;
     std::stringstream stream_dayyear, stream_previous_day, stream_f10year;
     int int_dayyear, int_previous_day, int_f10year;
@@ -242,9 +230,6 @@ std::tuple<std::string, std::string,
     stream_f10year << str_f10year;
     stream_f10year >> str_f10year; 
 
-    std::cout << "CHECK_B" << " " << str_dayyear << " " << str_previous_day 
-        << " " << str_f10year << "\n";
-
     return {str_dayyear, str_previous_day, str_f10year};
 
 };
@@ -254,7 +239,6 @@ std::tuple<std::string, std::string> Force_drag_nrlmsise00::msis_f107(
         std::string prev_day, std::string f10_year) {
     // Retrieves F10.7 & F10.7A solar flux index values from file:
 
-    std::cout << "CHECK_5 " << f10_year << "\n";
     std::string F107_value, F107A_value, ignore1, ignore2, ignore3, search, 
         line;
     std::stringstream line_stream;
@@ -361,7 +345,6 @@ double Force_drag_nrlmsise00::retrieve_mass_density(std::string str_dayyear,
         std::string F107A_value, std::string Ap_value) {
     //Command line instructions to run NRLMSISE00:
 
-    std::cout << "CHECK_7 \n";
     std::string str_start, str_end, str_res, str_convert;
 
     std::string cmd = std::string("/Users/johnkeeling/Desktop/Astrophysics_MSc/"
